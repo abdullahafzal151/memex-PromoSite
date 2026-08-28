@@ -4,19 +4,21 @@ import { Menu, X, ArrowRight } from "lucide-react";
 import Logomark from "./Logomark";
 import { fetchLatestRelease, RELEASES_PAGE_URL } from "../lib/github";
 import type { ReleaseInfo } from "../lib/github";
-import ThankYouModal from "./ThankYouModal"; // <-- Import the modal
+import ThankYouModal from "./ThankYouModal";
 
+// Added the Contact link here!
 const NAV_LINKS = [
   { label: "Product", id: "showcase" },
   { label: "Privacy", id: "privacy" },
   { label: "Tour", id: "tour" },
+  { label: "Contact", id: "contact" },
 ];
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
-  const [showModal, setShowModal] = useState(false); // <-- Modal state
+  const [showModal, setShowModal] = useState(false);
 
   const [release, setRelease] = useState<ReleaseInfo | null | "loading">("loading");
   
@@ -27,7 +29,7 @@ export default function Nav() {
   const downloadHref =
     release && release !== "loading" ? release.msiUrl : RELEASES_PAGE_URL;
 
-  const handleDownloadClick = () => setShowModal(true); // <-- Trigger modal
+  const handleDownloadClick = () => setShowModal(true);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -121,7 +123,7 @@ export default function Nav() {
           <div className="flex items-center gap-4 z-10">
             <a
               href={downloadHref}
-              onClick={handleDownloadClick} // <-- Attached handler
+              onClick={handleDownloadClick}
               className="group flex items-center justify-center gap-2 text-sm font-medium bg-accent hover:bg-accent-muted text-white px-5 py-2 rounded-full transition-all duration-300 active:scale-95 shadow-[0_0_20px_rgb(0,0,0/0.1)] hover:shadow-[0_0_25px_rgb(255,255,255/0.15)]"
             >
               <span>Download</span>

@@ -8,6 +8,7 @@ import NotChatbot from "./components/NotChatbot";
 import Privacy from "./components/Privacy";
 import Tour from "./components/Tour";
 import Download from "./components/Download";
+import Contact from "./components/Contact"; // <-- Import it here
 import Footer from "./components/Footer";
 
 export default function App() {
@@ -43,6 +44,7 @@ export default function App() {
         <Privacy />
         <Tour />
         <Download />
+        <Contact /> {/* <-- Place it right before the footer! */}
       </main>
       <Footer />
     </div>
