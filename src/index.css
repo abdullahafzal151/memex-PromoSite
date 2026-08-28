@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-canvas: 11 13 16;
+    --color-canvas-raised: 17 20 24;
+    --color-canvas-surface: 20 24 29;
+    --color-canvas-overlay: 23 27 32;
+
+    --color-border: 35 40 47;
+    --color-border-subtle: 26 30 36;
+
+    --color-ink: 231 233 236;
+    --color-ink-muted: 154 162 173;
+    --color-ink-faint: 120 128 138;
+
+    --color-accent: 91 141 239;
+    --color-accent-muted: 58 91 160;
+    --color-accent-soft: 28 42 69;
+
+    --color-success: 76 175 125;
+    --color-warning: 214 162 74;
+    --color-danger: 221 107 107;
+  }
+
+  html, body, #root {
+    height: 100%;
+  }
+  body {
+    -webkit-font-smoothing: antialiased;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgb(var(--color-border));
+    border-radius: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+  ::selection {
+    background: rgb(var(--color-accent) / 0.3);
+    color: rgb(var(--color-ink));
+  }
+}
+
+@layer components {
+  .grain-overlay {
+    @apply pointer-events-none fixed inset-0 z-[999] bg-grain opacity-[0.025] mix-blend-overlay;
+  }
+}
