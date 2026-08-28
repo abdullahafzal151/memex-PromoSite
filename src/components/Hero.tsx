@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Download, ChevronRight, Info } from "lucide-react"; // <-- Added Info icon
+import { Download, ChevronRight, Info, ArrowUpRight } from "lucide-react";
 import Logomark from "./Logomark";
 import tutorImg from "../assets/screens/tutor.png";
 import { fetchLatestRelease, RELEASES_PAGE_URL } from "../lib/github";
@@ -9,16 +9,20 @@ import ThankYouModal from "./ThankYouModal";
 
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);
-  
-  const [release, setRelease] = useState<ReleaseInfo | null | "loading">("loading");
+
+  const [release, setRelease] = useState<ReleaseInfo | null | "loading">(
+    "loading"
+  );
   const [showModal, setShowModal] = useState(false);
-  
+
   useEffect(() => {
     fetchLatestRelease().then(setRelease);
   }, []);
 
   const downloadHref =
-    release && release !== "loading" ? release.msiUrl : RELEASES_PAGE_URL;
+    release && release !== "loading"
+      ? release.msiUrl
+      : RELEASES_PAGE_URL;
 
   const handleDownloadClick = () => {
     setShowModal(true);
@@ -29,111 +33,384 @@ export default function Hero() {
     offset: ["start start", "end start"],
   });
 
-  const textOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const textY = useTransform(scrollYProgress, [0, 0.5], [0, 50]);
-  const uiRotateX = useTransform(scrollYProgress, [0, 0.3], [12, 0]);
-  const uiScale = useTransform(scrollYProgress, [0, 0.3], [0.9, 1]);
-  const uiY = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const textOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.55],
+    [1, 0]
+  );
+
+  const textY = useTransform(
+    scrollYProgress,
+    [0, 0.55],
+    [0, -45]
+  );
+
+  const uiRotateX = useTransform(
+    scrollYProgress,
+    [0, 0.35],
+    [8, 0]
+  );
+
+  const uiScale = useTransform(
+    scrollYProgress,
+    [0, 0.35],
+    [0.94, 1]
+  );
+
+  const uiY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [0, 80]
+  );
 
   const scrollTo = (id: string) =>
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById(id)?.scrollIntoView({
+      behavior: "smooth",
+    });
 
   return (
     <>
       <section
         ref={ref}
-        className="relative min-h-[100svh] flex flex-col items-center justify-start overflow-hidden pt-32 perspective-1000"
+        className="
+          relative
+          min-h-[100svh]
+          flex flex-col
+          items-center
+          justify-start
+          overflow-hidden
+          pt-28 sm:pt-32
+          perspective-1000
+        "
       >
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-[-1]" />
-        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-canvas to-transparent pointer-events-none z-[-1]" />
+        {/* ─────────────────────────────────────────
+            BACKGROUND
+        ───────────────────────────────────────── */}
+
+        <div
+          className="
+            absolute inset-0
+            pointer-events-none
+            z-[-2]
+            bg-[linear-gradient(to_right,#80808010_1px,transparent_1px),linear-gradient(to_bottom,#80808010_1px,transparent_1px)]
+            bg-[size:28px_28px]
+          "
+        />
+
+        {/* Very subtle ambient light behind the hero */}
+        <div
+          className="
+            absolute
+            left-1/2
+            top-24
+            -translate-x-1/2
+            w-[650px]
+            h-[420px]
+            rounded-full
+            bg-accent/[0.035]
+            blur-[120px]
+            pointer-events-none
+            z-[-1]
+          "
+        />
+
+        {/* Fade the grid toward the product */}
+        <div
+          className="
+            absolute
+            inset-x-0
+            bottom-0
+            h-[360px]
+            bg-gradient-to-t
+            from-canvas
+            via-canvas/70
+            to-transparent
+            pointer-events-none
+            z-[-1]
+          "
+        />
+
+        {/* ─────────────────────────────────────────
+            HERO COPY
+        ───────────────────────────────────────── */}
 
         <motion.div
-          style={{ y: textY, opacity: textOpacity }}
-          className="relative z-10 flex flex-col items-center text-center px-6 w-full max-w-4xl"
+          style={{
+            y: textY,
+            opacity: textOpacity,
+          }}
+          className="
+            relative z-10
+            flex flex-col
+            items-center
+            text-center
+            px-6
+            w-full
+            max-w-5xl
+          "
         >
+          {/* Badge */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: "spring", stiffness: 200, damping: 20 }}
-            className="mb-8"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.6,
+              ease: "easeOut",
+            }}
+            className="mb-7"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent-soft border border-accent/20 text-accent text-xs font-semibold uppercase tracking-wider mb-6">
-              <Logomark size={14} />
-              Memex 1.0 is live
+            <div
+              className="
+                inline-flex
+                items-center
+                gap-2
+                px-3.5
+                py-1.5
+                rounded-full
+                bg-accent-soft
+                border border-accent/20
+                text-accent
+                text-[11px]
+                font-semibold
+                uppercase
+                tracking-[0.14em]
+              "
+            >
+              <Logomark size={13} />
+              Memex 1.0 — Now Live
             </div>
           </motion.div>
 
+          {/* Headline */}
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ type: "spring", stiffness: 150, damping: 20, delay: 0.1 }}
-            className="font-serif text-[2.75rem] leading-[1.05] sm:text-6xl md:text-7xl font-medium tracking-tight"
+            initial={{
+              opacity: 0,
+              y: 24,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
+            transition={{
+              type: "spring",
+              stiffness: 120,
+              damping: 20,
+            }}
+            className="
+              font-serif
+              text-[3.2rem]
+              leading-[0.98]
+              sm:text-6xl
+              md:text-7xl
+              lg:text-[5rem]
+              font-medium
+              tracking-[-0.045em]
+              max-w-4xl
+            "
           >
-            Your knowledge.
+            Everything you study.
             <br />
-            <span className="text-ink-muted">Perfectly understood.</span>
+            <span className="text-ink-muted">
+              Finally understood.
+            </span>
           </motion.h1>
 
+          {/* Description */}
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ type: "spring", stiffness: 150, damping: 20, delay: 0.2 }}
-            className="mt-6 max-w-xl text-base sm:text-lg text-ink-muted leading-relaxed"
+            initial={{
+              opacity: 0,
+              y: 18,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
+            transition={{
+              duration: 0.7,
+              delay: 0.12,
+            }}
+            className="
+              mt-5
+              max-w-2xl
+              text-base
+              sm:text-lg
+              text-ink-muted
+              leading-relaxed
+            "
           >
-            Turn your PDFs, slides, and notes into an AI-powered study workspace. 
-            Generate quizzes, flashcards, and exams backed by verifiable citations.
+            Drop in your PDFs, slides, and notes. Memex turns them
+            into an AI-powered study workspace with tutoring, quizzes,
+            flashcards, and exams grounded in your own material.
           </motion.p>
 
+          {/* CTA buttons */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ type: "spring", stiffness: 150, damping: 20, delay: 0.3 }}
-            className="mt-10 flex flex-col sm:flex-row items-center gap-4"
+            initial={{
+              opacity: 0,
+              y: 18,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
+            transition={{
+              duration: 0.7,
+              delay: 0.2,
+            }}
+            className="
+              mt-8
+              flex flex-col
+              sm:flex-row
+              items-center
+              gap-3
+            "
           >
+            {/* Primary */}
             <a
               href={downloadHref}
               onClick={handleDownloadClick}
-              className="flex items-center gap-2 text-sm font-semibold bg-accent text-white px-7 py-3.5 rounded-md transition-all active:scale-[0.98] hover:bg-accent-muted shadow-[0_4px_14px_0_rgb(var(--color-accent)/0.39)] hover:shadow-[0_6px_20px_rgba(var(--color-accent)/0.23)]"
+              className="
+                group
+                flex
+                items-center
+                gap-2
+                text-sm
+                font-semibold
+                bg-accent
+                text-white
+                px-6
+                py-3.5
+                rounded-lg
+                transition-all
+                active:scale-[0.98]
+                hover:bg-accent-muted
+                shadow-[0_8px_30px_rgb(var(--color-accent)/0.22)]
+              "
             >
-              <Download size={18} />
+              <Download
+                size={17}
+                className="
+                  transition-transform
+                  group-hover:-translate-y-0.5
+                "
+              />
+
               Download for Windows
+
+              <ArrowUpRight
+                size={15}
+                className="
+                  opacity-60
+                  transition-transform
+                  group-hover:translate-x-0.5
+                  group-hover:-translate-y-0.5
+                "
+              />
             </a>
-            
+
+            {/* Secondary */}
             <button
               onClick={() => scrollTo("showcase")}
-              className="group flex items-center gap-1 text-sm font-semibold text-ink px-7 py-3.5 rounded-md border border-border-subtle hover:border-border hover:bg-canvas-raised transition-all active:scale-[0.98]"
+              className="
+                group
+                flex
+                items-center
+                gap-1.5
+                text-sm
+                font-semibold
+                text-ink
+                px-6
+                py-3.5
+                rounded-lg
+                border
+                border-border-subtle
+                hover:border-border
+                hover:bg-canvas-raised
+                transition-all
+                active:scale-[0.98]
+              "
             >
-              See how it works
-              <ChevronRight size={16} className="text-ink-muted group-hover:text-ink transition-colors group-hover:translate-x-0.5" />
+              Explore Memex
+
+              <ChevronRight
+                size={16}
+                className="
+                  text-ink-muted
+                  transition-all
+                  group-hover:text-ink
+                  group-hover:translate-x-0.5
+                "
+              />
             </button>
           </motion.div>
 
-          {/* SmartScreen Disclaimer Pill */}
+          {/* SmartScreen note */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.45 }}
-            className="mt-4 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-canvas-raised border border-border-subtle text-xs text-ink-muted max-w-md"
+            transition={{
+              duration: 0.6,
+              delay: 0.35,
+            }}
+            className="
+              mt-4
+              flex
+              items-center
+              gap-2
+              text-[11px]
+              text-ink-faint
+            "
           >
-            <Info size={14} className="text-accent shrink-0" />
+            <Info
+              size={13}
+              className="text-accent/80 shrink-0"
+            />
+
             <span>
-              If Windows SmartScreen appears: click <strong className="text-ink font-semibold">More info</strong> → <strong className="text-ink font-semibold">Run anyway</strong>.
+              Windows SmartScreen?
+              <span className="text-ink-muted">
+                {" "}Choose More info → Run anyway.
+              </span>
             </span>
           </motion.div>
 
-          <motion.p
+          {/* Product facts */}
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="mt-6 text-xs text-ink-faint font-medium tracking-wide flex items-center justify-center gap-2"
+            transition={{
+              duration: 0.6,
+              delay: 0.45,
+            }}
+            className="
+              mt-4
+              flex
+              items-center
+              text-[11px]
+              text-ink-faint
+              font-medium
+              tracking-wide
+            "
           >
             <span>Windows</span>
-            <span className="w-1 h-1 rounded-full bg-border" />
-            <span>Free Forever</span>
-            <span className="w-1 h-1 rounded-full bg-border" />
-            <span>Local or Cloud AI</span>
-          </motion.p>
+
+            <span className="mx-3 opacity-50">
+              ·
+            </span>
+
+            <span>Free forever</span>
+
+            <span className="mx-3 opacity-50">
+              ·
+            </span>
+
+            <span>Local or cloud AI</span>
+          </motion.div>
         </motion.div>
+
+        {/* ─────────────────────────────────────────
+            PRODUCT PREVIEW
+        ───────────────────────────────────────── */}
 
         <motion.div
           style={{
@@ -141,27 +418,116 @@ export default function Hero() {
             scale: uiScale,
             y: uiY,
           }}
-          initial={{ opacity: 0, y: 100 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 100, damping: 25, delay: 0.4 }}
-          className="relative z-20 mt-16 w-full max-w-5xl px-6 pb-20 origin-top"
+          initial={{
+            opacity: 0,
+            y: 90,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+          transition={{
+            type: "spring",
+            stiffness: 80,
+            damping: 24,
+            delay: 0.35,
+          }}
+          className="
+            relative
+            z-20
+            mt-14
+            w-full
+            max-w-6xl
+            px-5
+            sm:px-8
+            pb-16
+            origin-top
+          "
         >
-          <div className="relative rounded-xl overflow-hidden border border-border bg-canvas shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)]">
-            <div className="flex items-center gap-1.5 h-10 px-4 bg-canvas-overlay border-b border-border">
-              <span className="h-3 w-3 rounded-full bg-[#ff5f57] border border-[#e0443e]" />
-              <span className="h-3 w-3 rounded-full bg-[#febc2e] border border-[#d89e24]" />
-              <span className="h-3 w-3 rounded-full bg-[#28c840] border border-[#1aab29]" />
+          {/* Product glow */}
+          <div
+            className="
+              absolute
+              left-1/2
+              top-10
+              -translate-x-1/2
+              w-[70%]
+              h-[60%]
+              rounded-full
+              bg-accent/[0.07]
+              blur-[90px]
+              pointer-events-none
+              z-[-1]
+            "
+          />
+
+          {/* Memex application window */}
+          <div
+            className="
+              relative
+              overflow-hidden
+              rounded-2xl
+              border
+              border-border
+              bg-canvas
+              shadow-[0_35px_100px_-30px_rgba(0,0,0,0.75)]
+            "
+          >
+            {/* Custom app title bar */}
+            <div
+              className="
+                flex
+                items-center
+                justify-between
+                h-11
+                px-4
+                bg-canvas-overlay
+                border-b
+                border-border
+              "
+            >
+              <div className="flex items-center gap-2.5">
+                <Logomark size={17} />
+
+                <span className="text-xs font-medium text-ink-muted">
+                  Memex
+                </span>
+
+                <span className="text-ink-faint text-xs">
+                  /
+                </span>
+
+                <span className="text-xs text-ink-faint">
+                  AI Tutor
+                </span>
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-ink-faint/30" />
+                <span className="w-2 h-2 rounded-full bg-ink-faint/30" />
+                <span className="w-2 h-2 rounded-full bg-ink-faint/30" />
+              </div>
             </div>
+
+            {/* Actual Memex UI */}
             <img
               src={tutorImg}
               alt="Memex AI Tutor interface"
-              className="w-full h-auto"
+              className="
+                block
+                w-full
+                h-auto
+                select-none
+              "
             />
           </div>
         </motion.div>
       </section>
 
-      <ThankYouModal isOpen={showModal} onClose={() => setShowModal(false)} />
+      <ThankYouModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+      />
     </>
   );
 }
