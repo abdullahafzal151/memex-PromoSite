@@ -1,17 +1,16 @@
 import { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Download, ChevronRight } from "lucide-react";
+import { Download, ChevronRight, Info } from "lucide-react"; // <-- Added Info icon
 import Logomark from "./Logomark";
 import tutorImg from "../assets/screens/tutor.png";
 import { fetchLatestRelease, RELEASES_PAGE_URL } from "../lib/github";
 import type { ReleaseInfo } from "../lib/github";
-import ThankYouModal from "./ThankYouModal"; // <-- Import the modal
+import ThankYouModal from "./ThankYouModal";
 
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);
   
   const [release, setRelease] = useState<ReleaseInfo | null | "loading">("loading");
-  // State to control the modal
   const [showModal, setShowModal] = useState(false);
   
   useEffect(() => {
@@ -21,10 +20,7 @@ export default function Hero() {
   const downloadHref =
     release && release !== "loading" ? release.msiUrl : RELEASES_PAGE_URL;
 
-  // Handles clicking the download link
   const handleDownloadClick = () => {
-    // We let the native <a> tag href trigger the actual file download,
-    // and we just use this click to ALSO show our UI popup.
     setShowModal(true);
   };
 
@@ -96,7 +92,7 @@ export default function Hero() {
           >
             <a
               href={downloadHref}
-              onClick={handleDownloadClick} // <-- Attached the new handler here
+              onClick={handleDownloadClick}
               className="flex items-center gap-2 text-sm font-semibold bg-accent text-white px-7 py-3.5 rounded-md transition-all active:scale-[0.98] hover:bg-accent-muted shadow-[0_4px_14px_0_rgb(var(--color-accent)/0.39)] hover:shadow-[0_6px_20px_rgba(var(--color-accent)/0.23)]"
             >
               <Download size={18} />
@@ -110,6 +106,19 @@ export default function Hero() {
               See how it works
               <ChevronRight size={16} className="text-ink-muted group-hover:text-ink transition-colors group-hover:translate-x-0.5" />
             </button>
+          </motion.div>
+
+          {/* SmartScreen Disclaimer Pill */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.45 }}
+            className="mt-4 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-canvas-raised border border-border-subtle text-xs text-ink-muted max-w-md"
+          >
+            <Info size={14} className="text-accent shrink-0" />
+            <span>
+              If Windows SmartScreen appears: click <strong className="text-ink font-semibold">More info</strong> → <strong className="text-ink font-semibold">Run anyway</strong>.
+            </span>
           </motion.div>
 
           <motion.p
@@ -152,7 +161,6 @@ export default function Hero() {
         </motion.div>
       </section>
 
-      {/* Render the modal outside the main layout flow */}
       <ThankYouModal isOpen={showModal} onClose={() => setShowModal(false)} />
     </>
   );

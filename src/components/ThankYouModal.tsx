@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { X, FileDown, MonitorPlay, Sparkles } from "lucide-react";
+import { X, FileDown, MonitorPlay, Sparkles, ShieldAlert } from "lucide-react";
 
 interface ThankYouModalProps {
   isOpen: boolean;
@@ -81,9 +81,19 @@ export default function ThankYouModal({ isOpen, onClose }: ThankYouModalProps) {
               </div>
             </div>
             
+            {/* SmartScreen Warning Box */}
+            <div className="mt-6 p-3.5 bg-canvas-overlay/50 border border-border-subtle rounded-xl flex items-start gap-3">
+              <ShieldAlert className="text-accent shrink-0 mt-0.5" size={18} />
+              <p className="text-xs text-ink-muted leading-relaxed">
+                <strong className="text-ink font-medium">Windows SmartScreen popup?</strong>
+                <br />
+                Click <strong className="text-ink font-medium">More info</strong> then <strong className="text-ink font-medium">Run anyway</strong> to install safely.
+              </p>
+            </div>
+            
             <button 
               onClick={onClose}
-              className="mt-8 w-full py-2.5 text-sm font-medium text-ink bg-canvas hover:bg-canvas-raised border border-border rounded-lg transition-colors"
+              className="mt-6 w-full py-2.5 text-sm font-medium text-ink bg-canvas hover:bg-canvas-raised border border-border rounded-lg transition-colors"
             >
               Got it
             </button>
