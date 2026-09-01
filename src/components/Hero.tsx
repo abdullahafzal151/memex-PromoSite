@@ -208,7 +208,7 @@ export default function Hero() {
               max-w-4xl
             "
           >
-            Everything you study.
+            Your Knowledge.
             <br />
             <span className="text-ink-muted">
               Finally understood.
